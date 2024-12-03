@@ -21,7 +21,7 @@ j <- webpage %>%
   html_table() 
 
 
-# tratamento --------------------------------------------------------------
+# manipulation -------------------------------------------------------------
 
 base <- j[[1]] %>% 
   janitor::clean_names() %>% 
@@ -31,14 +31,37 @@ base <- j[[1]] %>%
 
 # analysis ----------------------------------------------------------------
 
-mean_pop <- mean(base$populacao)
-var_pop <- var(base$populacao)
+mean_pop <- mean(base$populacao); mean_pop
+var_pop <- var(base$populacao); var_pop
+
+boxplot(tail(base$populacao), 100)
 
 
-# sampling ----------------------------------------------------------------
+# amostras ----------------------------------------------------------------
+
 N = nrow(base)
-n = c(10, 50, 100, 200, 400, 800, 1000, 2000, 4000)
+n_tamanhos = c(10, 50, 100, 200, 400, 800, 1000, 2000, 4000)
 
-# com reposição
+# amostras sem reposição --------------------------------------------------
+set.seed(0304)
+medias_amostrais_SEM <- sapply(n_tamanhos, function(n) {
+  amostras <- sample(base$populacao, size = n, replace = FALSE)
+  mean(amostras)
+})
 
-# sem reposição
+cbind(n_tamanhos, medias_amostrais_SEM) %>% 
+  xtable::xtable(caption = "Médias amostrais de amostras aleatórias sem reposição.") %>% 
+  print(include.rownames = FALSE)
+
+
+# amostras com reposição --------------------------------------------------
+
+set.seed(0304)
+medias_amostrais_COM <- sapply(n_tamanhos, function(n) {
+  amostras <- sample(base$populacao, size = n, replace = TRUE)
+  mean(amostras)
+})
+
+cbind(n_tamanhos, medias_amostrais_COM) %>% 
+  xtable::xtable(caption = "Médias amostrais de amostras aleatórias sem reposição.") %>% 
+  print(include.rownames = FALSE)

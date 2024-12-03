@@ -10,7 +10,6 @@ library(dplyr)
 
 # S1 ----------------------------------------------------------------------
 
-
 populacao = c(1,2,4,4,7,7,7,8)
 
 N = 8
@@ -45,6 +44,6 @@ base <- cbind(possiveis_amostras,medias_amostras, prop_amostras$prop)
 base
 
 
-# c
+
 
 
